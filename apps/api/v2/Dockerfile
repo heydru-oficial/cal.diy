@@ -8,6 +8,10 @@ WORKDIR /calcom
 RUN set -eux;
 RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3
 
+# node-gyp needs these to compile native addons (e.g. deasync) on Alpine, which
+# ships without a build toolchain unlike the Debian-based node:20 image.
+RUN apk add --no-cache python3 make g++
+
 ENV NODE_ENV="production"
 ENV NODE_OPTIONS="--max-old-space-size=8192"
 ENV DATABASE_DIRECT_URL=${DATABASE_DIRECT_URL}
